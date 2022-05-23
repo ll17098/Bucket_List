@@ -7,11 +7,10 @@
     <title>My Bucket List</title>
 </head>
 <style>
-body {
-  backround-image: url("backriund for make table.jpg");
+html {
+  backround-image: url("mtbackr.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
-
 }
 .nav {
   list-style-type: none;
@@ -20,7 +19,7 @@ body {
   overflow: hidden;
   background-color: #333;
 }
-li a {
+li a, .dropdown {
   float: right;
   display: block;
   color: white;
@@ -33,6 +32,47 @@ li a {
 }
 .field_wrap{
   text-align: center; 
+}
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+.dropbtn {
+  background-color: #1C4C83;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  
+}
+
+
+.dropdown-content {
+  display: none;
+  position: relative;
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  text-align: left;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #7D8185}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #1C4C83;
 }
 th, td {
   border: 1px solid black;
@@ -60,9 +100,16 @@ td {
 <body>
 <div class="nav">
   <li style="float:left"><a class="active" href="index.html">Fill my Bucket</a></li>
-  <li><a href="/edit/<no:int>"> Edit Bucket List</a></li>
   <li><a href="index.html">Home</a></li>
   <li><a href="logout.py">Log Out</a></li>
+</div>
+
+<div class="dropdown">
+  <button class="dropbtn">Bucket List Options</button>
+  <div class="dropdown-content">
+    <a href="/edit">Edit Current Item</a>
+    <a href="/new">Add new Item</a>
+  </div>
 </div>
 
 
