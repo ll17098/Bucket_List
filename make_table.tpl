@@ -60,6 +60,7 @@ td {
 <body>
 <div class="nav">
   <li style="float:left"><a class="active" href="index.html">Fill my Bucket</a></li>
+  <li><a href="/edit/<no:int>"> Edit Bucket List</a></li>
   <li><a href="index.html">Home</a></li>
   <li><a href="logout.py">Log Out</a></li>
 </div>
