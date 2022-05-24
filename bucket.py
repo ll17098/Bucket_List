@@ -1,7 +1,7 @@
 import sqlite3
 from bottle import route, run, template, request, debug, static_file, error
 
-@route('/bucket')
+@route('/bucket', method='GET')
 def todo_list():
     conn = sqlite3.connect('mydatabase.db')
     c = conn.cursor()
@@ -19,7 +19,7 @@ def new_item():
     conn = sqlite3.connect('mydatabase.db')
     c = conn.cursor()
 
-    c.execute("INSERT INTO bucket (task,status) VALUES (?,?)", (new, 1))
+    c.execute("INSERT INTO bucket (task,status) VALUES (?,?)", (new, 0))
     new_id = c.lastrowid
 
     conn.commit()
@@ -48,6 +48,15 @@ def edit_item(no):
         conn.commit()
 
         return '<p>The item number %s was successfully updated</p>' % no
+
+    elif request.GET.save:
+        conn = sqlite3.connect('mydatabase.db')
+        c = conn.cursor()
+        c.execute("DELETE FROM bucket WHERE task = ?, status = ? id LIKE ?", (no))
+        conn.commit()
+
+        return '<p>The item number %s was successfully deleted</p>' % no
+        
     else:
         conn = sqlite3.connect('mydatabase.db')
         c = conn.cursor()
