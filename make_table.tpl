@@ -30,9 +30,6 @@ li a, .dropdown {
 .active {
   background-color: #1C4C83;
 }
-.field_wrap{
-  text-align: center; 
-}
 .dropdown {
   position: relative;
   display: inline-block;
@@ -50,7 +47,7 @@ li a, .dropdown {
 
 .dropdown-content {
   display: none;
-  position: relative;
+  position: absolute;
   background-color: white;
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
@@ -96,12 +93,13 @@ td {
   margin-right: auto;
   width: 70%;
 }
+
 </style>
 <body>
 <div class="nav">
   <li style="float:left"><a class="active" href="index.html">Fill my Bucket</a></li>
-  <li><a href="index.html">Home</a></li>
   <li><a href="logout.py">Log Out</a></li>
+  <li><a href="index.html">Home</a></li>
 </div>
 
 <div class="dropdown">
