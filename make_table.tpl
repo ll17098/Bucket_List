@@ -27,6 +27,9 @@ li a, .dropdown {
   padding: 14px 16px;
   text-decoration: none;
 }
+li a:hover {
+  background-color: #7D8185;
+}
 .active {
   background-color: #1C4C83;
 }
@@ -41,25 +44,24 @@ li a, .dropdown {
   font-size: 16px;
   border: none;
   cursor: pointer;
-  
 }
-
-
 .dropdown-content {
   display: none;
   position: absolute;
   background-color: white;
-  min-width: 160px;
+  min-width: 170px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
-  text-align: left;
+  text-align: center;
 }
 
 .dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
   display: block;
+  width: 1
+  color: black;
+  padding: 16px;
+  text-decoration: none;
+  
 }
 
 .dropdown-content a:hover {background-color: #7D8185}
@@ -70,6 +72,17 @@ li a, .dropdown {
 
 .dropdown:hover .dropbtn {
   background-color: #1C4C83;
+}
+
+.container {
+  margin-top: 100px;
+  margin-bottom: auto;
+}
+
+.field_wrap {
+  margin-left: auto;
+  margin-right; auto;
+  text-align: center;
 }
 th, td {
   border: 1px solid black;
@@ -88,13 +101,16 @@ td {
   color: white;
   
 }
-.center { 
+.tbl { 
   margin-left: auto;
   margin-right: auto;
   width: 70%;
 }
 
 </style>
+
+
+
 <body>
 <div class="nav">
   <li style="float:left"><a class="active" href="index.html">Fill my Bucket</a></li>
@@ -111,22 +127,23 @@ td {
 </div>
 
 
-<div class="field_wrap">
-  <h1>Here is your Bucket List</h1>
-</div>
-
-<table class="center">
-<th>ID</th>
-<th>Task</th>
-<th>Status</th> 
-%for row in rows:
-  <tr>
-  %for col in row:
-    <td>{{col}}</td>
+<div class="container">
+  <div class="field_wrap">
+    <h1>Here is your Bucket List</h1>
+  </div>
+  <table class="tbl">
+  <th>ID</th>
+  <th>Task</th>
+  <th>Status</th> 
+  %for row in rows:
+    <tr>
+    %for col in row:
+      <td>{{col}}</td>
+    %end
+    </tr>
   %end
-  </tr>
-%end
-<table>
+  <table>
+</div>
 
 </body>
 </html>
