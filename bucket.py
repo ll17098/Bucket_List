@@ -1,5 +1,10 @@
 import sqlite3
-from bottle import route, run, template, request, debug, static_file, error
+from bottle import route, run, template, request, debug, static_file, error, view
+
+@route("/")
+@view("index")
+def index():
+    pass
 
 @route('/bucket', method='GET')
 def todo_list():
@@ -52,11 +57,10 @@ def edit_item(no):
     elif request.GET.save:
         conn = sqlite3.connect('mydatabase.db')
         c = conn.cursor()
-        c.execute("DELETE FROM bucket WHERE task = ?, status = ? id LIKE ?", (no))
+        c.execute("DELETE FROM bucket WHERE id = ?", (no))
         conn.commit()
 
         return '<p>The item number %s was successfully deleted</p>' % no
-        
     else:
         conn = sqlite3.connect('mydatabase.db')
         c = conn.cursor()
