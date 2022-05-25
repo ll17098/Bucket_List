@@ -37,15 +37,17 @@ def new_item():
 @route('/edit/<no:int>', method='GET')
 def edit_item(no):
 
-    if request.GET.save:
-        edit = request.GET.task.strip()
-        status = request.GET.status.strip()
+    edit = request.GET.task.strip()
+    status = request.GET.status.strip()
 
-        if status == 'open':
-            status = 1
+    if request.GET.save:
+        
+
+        if status == 'Yes':
+            status = "Yes"
 
         else:
-            status = 0
+            status = "No"
             
         conn = sqlite3.connect('mydatabase.db')
         c = conn.cursor()
@@ -54,17 +56,18 @@ def edit_item(no):
 
         return '<p>The item number %s was successfully updated</p>' % no
 
-    elif request.GET.save:
+    elif request.GET.delete:
+    
         conn = sqlite3.connect('mydatabase.db')
         c = conn.cursor()
-        c.execute("DELETE FROM bucket WHERE id = ?", (no))
+        c.execute("DELETE FROM bucket WHERE task = ? AND status = ? AND id = ?", (edit, status, no))
         conn.commit()
 
         return '<p>The item number %s was successfully deleted</p>' % no
     else:
         conn = sqlite3.connect('mydatabase.db')
         c = conn.cursor()
-        c.execute("SELECT task FROM bucket WHERE id LIKE ?", (str(no),))
+        c.execute("SELECT task FROM bucket WHERE id LIKE ?", (str(no)))
         cur_data = c.fetchone()
 
         return template('edit_task', old=cur_data, no=no)
