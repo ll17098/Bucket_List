@@ -24,7 +24,7 @@ def new_item():
     conn = sqlite3.connect('mydatabase.db')
     c = conn.cursor()
 
-    c.execute("INSERT INTO bucket (task,status) VALUES (?,?)", (new, 0))
+    c.execute("INSERT INTO bucket (task,status) VALUES (?,?)", (new, "No"))
     new_id = c.lastrowid
 
     conn.commit()
@@ -41,9 +41,7 @@ def edit_item(no):
     status = request.GET.status.strip()
 
     if request.GET.save:
-        
-
-        if status == 'Yes':
+        if status == "Yes":
             status = "Yes"
 
         else:
@@ -57,10 +55,9 @@ def edit_item(no):
         return '<p>The item number %s was successfully updated</p>' % no
 
     elif request.GET.delete:
-    
         conn = sqlite3.connect('mydatabase.db')
         c = conn.cursor()
-        c.execute("DELETE FROM bucket WHERE task = ? AND status = ? AND id = ?", (edit, status, no))
+        c.execute("DELETE FROM bucket WHERE task = ? AND id = ?", (edit, no))
         conn.commit()
 
         return '<p>The item number %s was successfully deleted</p>' % no
@@ -69,20 +66,7 @@ def edit_item(no):
         c = conn.cursor()
         c.execute("SELECT task FROM bucket WHERE id LIKE ?", (str(no)))
         cur_data = c.fetchone()
-
         return template('edit_task', old=cur_data, no=no)
-
-@route('/item<item:re:[0-9]+>')
-def show_item(item):
-    conn = sqlite3.connect('mydatabase.db')
-    c = conn.cursor()
-    c.execute("SELECT task FROM bucket WHERE id LIKE ?", (item,))
-    result = c.fetchall()
-    c.close()
-    if not result:
-        return 'This item number does not exist!'
-    else:
-        return 'Task: %s' % result[0]
 
 @route('/help')
 def help():
