@@ -1,10 +1,25 @@
 import sqlite3
-from bottle import route, run, template, request, debug, static_file, error, view
+from bottle import route, run, template, request, debug, static_file, error, view, static_file
 
 @route("/")
-@view("index")
-def index():
+@view("login")
+def login():
     pass
+
+@route("/reg", method="GET")
+def register():
+ if request.GET.save:
+    username = request.GET.username.strip()
+    password = request.GET.password.strip()
+
+    conn = sqlite3.connect('mydatabase.db')
+    c = conn.cursor()
+
+    c.execute("INSERT INTO userInfo (username,password) VALUES (?,?)", (username, password))
+    conn.commit()
+    c.close()
+ else:
+    return template('reg.tpl')
 
 @route('/bucket', method='GET')
 def todo_list():
