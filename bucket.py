@@ -1,10 +1,27 @@
 import sqlite3
-from bottle import route, run, template, request, debug, static_file, error, view, static_file
+from bottle import route, run, template, request, debug, error
 
-@route("/")
-@view("login")
+@route('/')
 def login():
-    pass
+    return '''
+        <form action="/login" method="post">
+            username: <input name="username" type="text" />
+            password: <input name="password" type="password" />
+            <input value="Login" type="submit" />
+        </form>
+           '''
+@route('/', method ="POST")
+def check_login():
+    conn = sqlite3.connect('mydatabase.db')
+    c = conn.cursor()
+    c.execute("SELECT username, password FROM userInfo")
+    result = c.fetchall()
+
+    if username and password in result:
+        return bucket_list()
+
+
+
 
 @route("/reg", method="GET")
 def register():
@@ -15,39 +32,35 @@ def register():
     conn = sqlite3.connect('mydatabase.db')
     c = conn.cursor()
 
-    c.execute("INSERT INTO userInfo (username,password) VALUES (?,?)", (username, password))
+    c.execute("INSERT INTO userInfo (username,password) VALUES (?, ?)", (username, password))
     conn.commit()
     c.close()
  else:
-    return template('reg.tpl')
+    return template('templates/reg.html')
 
 @route('/bucket', method='GET')
-def todo_list():
+def bucket_list():
     conn = sqlite3.connect('mydatabase.db')
     c = conn.cursor()
     c.execute("SELECT id, task, status FROM bucket")
     result = c.fetchall()
     c.close()
-    return template('make_table', rows=result)
+    return template('templates/make_table', rows=result)
 
 @route('/new', method='GET')
 def new_item():
-    
  if request.GET.save:
     new = request.GET.task.strip()
 
     conn = sqlite3.connect('mydatabase.db')
     c = conn.cursor()
 
-    c.execute("INSERT INTO bucket (task,status) VALUES (?,?)", (new, "No"))
-    new_id = c.lastrowid
-
+    c.execute("INSERT INTO bucket (task,status) VALUES (?,?)", (new, "Incomplete"))
     conn.commit()
-    c.close()
+    return bucket_list()
 
-    return '<p>The new task was inserted into the database, the ID is %s</p>' % new_id
  else:
-     return template('new_task.tpl')
+     return template('templates/new_task.html')
 
 @route('/edit/<no:int>', method='GET')
 def edit_item(no):
@@ -56,11 +69,11 @@ def edit_item(no):
     status = request.GET.status.strip()
 
     if request.GET.save:
-        if status == "Yes":
-            status = "Yes"
+        if status == "Complete":
+            status = "Incomplete"
 
         else:
-            status = "No"
+            status = "Incomplete"
             
         conn = sqlite3.connect('mydatabase.db')
         c = conn.cursor()
@@ -81,11 +94,8 @@ def edit_item(no):
         c = conn.cursor()
         c.execute("SELECT task FROM bucket WHERE id LIKE ?", (str(no)))
         cur_data = c.fetchone()
-        return template('edit_task', old=cur_data, no=no)
+        return template('templates/edit_task', old=cur_data, no=no)
 
-@route('/help')
-def help():
-    return static_file('help.html', root='/path/to/file')
 
 @route('/json<json:re:[0-9]+>')
 def show_json(json):
