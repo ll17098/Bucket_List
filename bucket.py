@@ -1,33 +1,33 @@
 import sqlite3
 from bottle import route, run, template, request, debug, error
 
+
+
 @route('/')
 def login():
-    return '''
-        <form action="/login" method="post">
-            username: <input name="username" type="text" />
-            password: <input name="password" type="password" />
-            <input value="Login" type="submit" />
-        </form>
-           '''
-@route('/', method ="POST")
-def check_login():
+    return template('templates/login.html')
+
+@route('/checkLogin', method=['POST'])
+def checklogin():
+    uname = request.GET.username.strip()
+    pword = request.GET.password.strip()
     conn = sqlite3.connect('mydatabase.db')
     c = conn.cursor()
-    c.execute("SELECT username, password FROM userInfo")
+    c.execute("SELECT * FROM userInfo WHERE username LIKE ? AND password LIKE ?", (uname, pword))
     result = c.fetchall()
+    
+    if  result == uname and pword:
+        return 'logged in'
 
-    if username and password in result:
-        return bucket_list()
-
-
+    else:
+        return 'Incorrect Login'
 
 
 @route("/reg", method="GET")
 def register():
  if request.GET.save:
-    username = request.GET.username.strip()
-    password = request.GET.password.strip()
+    username = request.GET.Rusername.strip()
+    password = request.GET.Rpassword.strip()
 
     conn = sqlite3.connect('mydatabase.db')
     c = conn.cursor()
@@ -35,6 +35,7 @@ def register():
     c.execute("INSERT INTO userInfo (username,password) VALUES (?, ?)", (username, password))
     conn.commit()
     c.close()
+    return 'registered'
  else:
     return template('templates/reg.html')
 
@@ -62,7 +63,7 @@ def new_item():
  else:
      return template('templates/new_task.html')
 
-@route('/edit/<no:int>', method='GET')
+@route('/edit', method='GET')
 def edit_item(no):
 
     edit = request.GET.task.strip()
@@ -95,20 +96,6 @@ def edit_item(no):
         c.execute("SELECT task FROM bucket WHERE id LIKE ?", (str(no)))
         cur_data = c.fetchone()
         return template('templates/edit_task', old=cur_data, no=no)
-
-
-@route('/json<json:re:[0-9]+>')
-def show_json(json):
-    conn = sqlite3.connect('mydatabase.db')
-    c = conn.cursor()
-    c.execute("SELECT task FROM bucket WHERE id LIKE ?", (json,))
-    result = c.fetchall()
-    c.close()
-
-    if not result:
-        return {'task': 'This item number does not exist!'}
-    else:
-        return {'task': result[0]}
 
 @error(404)
 def mistake404(code):
