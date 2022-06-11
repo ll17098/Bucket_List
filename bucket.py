@@ -1,3 +1,4 @@
+from operator import countOf
 import sqlite3
 from bottle import route, run, template, request, debug, error, redirect, view
 
@@ -5,45 +6,49 @@ from bottle import route, run, template, request, debug, error, redirect, view
 #connects to databsse
 conn = sqlite3.connect("mydatabase.db")
 
-#Login page / landing page
 @route("/")
+@view("templates/login")
 def login():
-    checklogin()
-    return template("templates/login.html")
+    pass
+    
+@route("/reg")
+def register():
+    return template("templates/reg.html")
 
 #validates a users login inout
-@route("/", method=["POST"])
+@route("/login_validation", method="POST")
 def checklogin():
-    uname = request.GET.username.strip()
-    pword = request.GET.password.strip()
+    uname = request.forms["username"]
+    pword = request.forms["password"]
     c = conn.cursor()
-    c.execute("SELECT username, password FROM userInfo WHERE username LIKE ? AND password LIKE ? ", (uname, pword))
-
+    c.execute("SELECT * FROM userInfo WHERE username = '{}' AND password = '{}'".format(uname, pword))
+    result = c.fetchone()
     
-    
+    if result:
+        return 'loged in'
 
+    else:
+        return 'Incorrect login '
 #Records users new log in details into sql
-@route("/reg", method="GET")
-def register():
-    if request.method =="GET":
-        return template("templates/reg.html")
+@route("/reg_validation", method="POST")
+def checkRegister():
+    username = request.forms["username"]
+    password = request.forms["password"]
+    c = conn.cursor()
+    c.execute("SELECT * FROM userInfo WHERE username = '{}'".format(username))
+    result = c.fetchone()
+    
+    if result:
+        return "usrname already exist"
 
-    if request.GET.save and len(usernamecheck) == 0:
-        username = request.GET.username.strip()
-        password = request.GET.password.strip()
-        usernamecheck = c.execute("SELECT COUNT(*) FROM userInfo WHERE username LIKE ?", username=username)
-        
-        
+    else:
         c = conn.cursor()
-        c.execute("INSERT INTO userInfo (username, password) VALUES (?,?)", (username, password))
+        c.execute("INSERT INTO userInfo (username,password) VALUES (?,?)", (username,password))
         conn.commit()
-        return "registered<br><a href='/bucket'>Home</a>"
-
-    elif request.GET.save and len(usernamecheck) > 0:
-        return "usename already Exists"
-
+        return 'you have registered'
         
-        
+
+           
 #Displays user"s bucket list / Home page
 @route("/bucket", method="GET")
 def bucket_list():
@@ -61,7 +66,7 @@ def new_item():
     c = conn.cursor()
     c.execute("INSERT INTO bucket (task,status) VALUES (?,?)", (new, "Incomplete"))
     conn.commit()
-    return bucket_list()
+    return redirect("/bucket")
 
  else:
      return template("templates/new_task.html")
@@ -80,14 +85,14 @@ def edit_item(no):
         c = conn.cursor()
         c.execute("UPDATE bucket SET task = ?, status = ? WHERE id LIKE ?", (edit, status, no))
         conn.commit()
-        return bucket_list()
+        return redirect("/bucket")
 
 #deletes task
     elif request.GET.delete:
         c = conn.cursor()
         c.execute("DELETE FROM bucket WHERE task = ? AND id = ?", (edit, no))
         conn.commit()
-        return bucket_list()
+        return redirect("/bucket")
 
     else:
         c = conn.cursor()
