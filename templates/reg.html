@@ -1,11 +1,24 @@
-<form action="/reg" method="GET and POST">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+<form action="/reg_validation" method="POST">
     <div class="container">
         <h1>Registerrrrrrrr</h1>
         <label for="username"><b>Username</b></label>
         <input type="text" placeholder="Enter Username" name="username" required>
         <label for="password"><b>Password</b></label>
         <input type="password" placeholder="Enter Password" name="password" required>
-        <button type="submit" name="save" value="save"><a href="/bucket">SUBMIT</a></button>
-        <a href="/">Login</a>
+        <button type="submit" name="save" value="save" >REGISTER</button>
+        <button type="submit"><a href="/">Already have an Account? Login</a></button>
     </div>
 </form>
+    
+    
+</body>
+</html>
