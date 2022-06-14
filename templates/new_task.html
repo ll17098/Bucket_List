@@ -1,5 +1,119 @@
-<p>Add a new task to the ToDo list:</p>
-<form action="/new" method="GET">
-  <input type="text" size="100" maxlength="100" name="task" required>
-  <input type="submit" name="save" value="save" a href="/Bucket">
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Milestone</title>
+</head>
+<body>
+<div class="nav">
+  <li><a class="active" href="/">Fill my Bucket</a></li>
+  <li><a href="logout.py">Log Out</a></li>
+  <li><a href="/">Home</a></li>
+</div>
+
+<div class="dropdown">
+  <button class="dropbtn">Bucket List Options</button>
+  <div class="dropdown-content">
+    <a href="/bucket">My Bucket List</a>
+    <a href="/edit">Edit Current Item</a>
+  </div>
+</div>
+<div class="container">
+  <div class="field_wrap">
+    <h1>Add to your Bucket List</h1>
+  </div>
+
+  <div class="new">
+    <form action="/new" method="GET">
+      <input type="text" size="100" maxlength="100" placeholder="Enter your new Milestine" name="task" required>
+      <button type="submit" name="save" value="save">Add Milestone</button>
+    </form>
+  </div>
+</div>
+
+
+</body>
+</html>
+
+
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+}
+.nav {
+  list-style-type: none;
+  overflow: hidden;
+  background-color: #333;
+}
+li a {
+  float: right;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+li a:hover {
+  background-color: #7D8185;
+}
+.active {
+  background-color: #1C4C83;
+  float: left;
+}
+.container {
+  margin-top: 100px;
+  margin-left: 250px;
+  margin-right: 250px;
+  text-align: center;
+}
+.dropdown {
+  text-decoration: none;
+  color: white;
+  text-align: center;
+  float: right;
+  display: block;
+}
+.dropbtn {
+  background-color: #1C4C83;
+  color: white;
+  margin-top: 10px;
+  margin-right: 10px;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 170px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  text-align: center;
+}
+
+.dropdown-content a {
+  display: block;
+  width: 1;
+  color: black;
+  padding: 16px;
+  text-decoration: none;
+}
+
+.dropdown-content a:hover {background-color: #7D8185}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: #1C4C83;
+}
+
+
+</style>
