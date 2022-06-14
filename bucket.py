@@ -2,20 +2,22 @@ from operator import countOf
 import sqlite3
 from bottle import route, run, template, request, debug, error, redirect, view
 
+global uname
 
 #connects to databsse
 conn = sqlite3.connect("mydatabase.db")
 
+#landing page / login page
 @route("/")
 @view("templates/login")
 def login():
     pass
-    
+
+ #register page   
 @route("/reg")
 def register():
     return template("templates/reg.html")
 
-#validates a users login inout
 @route("/login_validation", method="POST")
 def checklogin():
     uname = request.forms["username"]
@@ -29,6 +31,7 @@ def checklogin():
 
     else:
         return 'Incorrect login '
+
 #Records users new log in details into sql
 @route("/reg_validation", method="POST")
 def checkRegister():
@@ -37,10 +40,10 @@ def checkRegister():
     c = conn.cursor()
     c.execute("SELECT * FROM userInfo WHERE username = '{}'".format(username))
     result = c.fetchone()
-    
+   
     if result:
         return "usrname already exist"
-
+ 
     else:
         c = conn.cursor()
         c.execute("INSERT INTO userInfo (username,password) VALUES (?,?)", (username,password))
@@ -93,6 +96,7 @@ def edit_item(no):
         c.execute("DELETE FROM bucket WHERE task = ? AND id = ?", (edit, no))
         conn.commit()
         return redirect("/bucket")
+
 
     else:
         c = conn.cursor()
