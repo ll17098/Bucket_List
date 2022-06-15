@@ -2,10 +2,12 @@ from operator import countOf
 import sqlite3
 from bottle import route, run, template, request, debug, error, redirect, view
 
-global uname
+
+
 
 #connects to databsse
 conn = sqlite3.connect("mydatabase.db")
+
 
 #landing page / login page
 @route("/")
@@ -25,20 +27,23 @@ def checklogin():
     c = conn.cursor()
     c.execute("SELECT * FROM userInfo WHERE username = '{}' AND password = '{}'".format(uname, pword))
     result = c.fetchone()
-    
     if result:
-        return 'loged in'
+        return redirect("/bucket")
 
     else:
-        return 'Incorrect login '
+
+        return redirect("/")
 
 #Records users new log in details into sql
 @route("/reg_validation", method="POST")
 def checkRegister():
-    username = request.forms["username"]
-    password = request.forms["password"]
+
+    global uname2
+    uname2 = request.forms["username"]
+    
+    pword2 = request.forms["password"]
     c = conn.cursor()
-    c.execute("SELECT * FROM userInfo WHERE username = '{}'".format(username))
+    c.execute("SELECT * FROM userInfo WHERE username = '{}'".format(uname2))
     result = c.fetchone()
    
     if result:
@@ -46,8 +51,13 @@ def checkRegister():
  
     else:
         c = conn.cursor()
-        c.execute("INSERT INTO userInfo (username,password) VALUES (?,?)", (username,password))
+        c.execute("INSERT INTO userInfo (username,password) VALUES (?,?)", (uname2,pword2))
+        c = conn.cursor()
+        
+        c.execute("CREATE TABLE IF NOT EXISTS '{}' (id INTEGER PRIMARY KEY, task char(100) NOT NULL, status bool NOT NULL)".format(uname2))
+        c.execute("INSERT INTO '{}'(task, status) VALUES('Add Your New Milestone', 'Incomplete')".format(uname2))
         conn.commit()
+           
         return 'you have registered'
         
 
@@ -56,7 +66,7 @@ def checkRegister():
 @route("/bucket", method="GET")
 def bucket_list():
     c = conn.cursor()
-    c.execute("SELECT id, task, status FROM bucket")
+    c.execute("SELECT * FROM '{}'".format(uname2))
     result = c.fetchall()
     c.close()
     return template("templates/make_table", rows=result)
@@ -67,7 +77,7 @@ def new_item():
  if request.GET.save:
     new = request.GET.task.strip()
     c = conn.cursor()
-    c.execute("INSERT INTO bucket (task,status) VALUES (?,?)", (new, "Incomplete"))
+    c.execute("INSERT INTO '{}' (task,status) VALUES ('{}','{}')".format(uname2, new, "Incomplete"))
     conn.commit()
     return redirect("/bucket")
 
@@ -96,7 +106,6 @@ def edit_item(no):
         c.execute("DELETE FROM bucket WHERE task = ? AND id = ?", (edit, no))
         conn.commit()
         return redirect("/bucket")
-
 
     else:
         c = conn.cursor()
