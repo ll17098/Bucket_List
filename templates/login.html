@@ -10,16 +10,60 @@
 <body>
 <form action="/login_validation" method="POST">
     <div class="container">
-        <h1> LOGINNNNNNNNN</h1>
+        <h1> LOGIN</h1>
         <label for="username"><b>Username</b></label>
+        <br>
         <input type="text" placeholder="Enter Username" name="username" required>
+        <br>
         <label for="password"><b>Password</b></label>
+        <br>
         <input type="password" placeholder="Enter Password" name="password" required>
-        <button type="submit" name="save" value="save">LOGIN</button>
-        <button type="submit"><a href="/reg">Don't have an account? Register</a></button>
+        <br>
+        <button type="submit" name="save" value="save"><a>LOGIN</a></button>
+        <button type="submit"><a href="/reg">Don't have an account? REGISTER</a></button>
     </div>
 </form>
-
-
 </body>
 </html>
+<style>
+* {
+    margin: 0;
+    padding:0 ;
+}
+body {
+    background-color: #333;
+    background-image: url("https://www.kindpng.com/picc/m/419-4192994_list-clip-art-bucket-list-clipart-black-and.png");
+    background-size: 60%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: left; 
+}
+.container {
+    height: 200px;
+    position: fixed;
+    top: 35%;
+    left: 75%;
+    margin-top: -100px;
+    margin-left: -100px;
+}
+input[type=text], input[type=password], button[type=submit] {
+ width: 360px;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+}
+button {
+    color: white;
+    box-shadow: 5px 5px 10x 5px #1C4C83;
+}
+button a {
+  color: black;
+}
+button:hover {
+    background-color: #1C4C83;
+    color: black;
+}
+label, a, h1 {
+    color: white;
+}
+</style>
