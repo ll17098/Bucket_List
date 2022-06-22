@@ -1,6 +1,7 @@
 from operator import countOf
 import sqlite3
-from bottle import route, run, template, request, debug, error, redirect, view
+from bottle import route, run, debug, error
+from bottle import template, request, redirect, view
 
 
 
@@ -32,7 +33,7 @@ def checklogin():
         return redirect("/bucket")
 
     else:
-        return "incorrect login"
+        return "Incorrect Username / Password<br><button type='submit'><a href='/'>LOGIN AGAIN</a></button>"
 
 #Records users new log in details into sql
 @route("/reg_validation", method="POST")
@@ -42,19 +43,19 @@ def checkRegister():
     pword2 = request.forms["password"]
     c = conn.cursor()
     c.execute("SELECT * FROM userInfo WHERE username = '{}'".format(uname2))
-    result = c.fetchone()
-   
-    if result:
-        return "username Already exists"
  
+    result = c.fetchone()
+
+    if result:
+        return "username already exists<br><button type='submit'><a href='/reg'>REGISTER AGAIN</a></button>"
+
     else:
         c = conn.cursor()
         c.execute("INSERT INTO userInfo (username,password) VALUES (?,?)", (uname2,pword2))
         c.execute("CREATE TABLE IF NOT EXISTS '{}' (id INTEGER PRIMARY KEY, task char(100) NOT NULL, status bool NOT NULL)".format(uname2))
-        c.execute("INSERT INTO '{}'(task, status) VALUES('Add Your New Milestone', 'Incomplete')".format(uname2))
+        c.execute("INSERT INTO '{}'(task, status) VALUES('Add Your New Milestone ', 'Incomplete')".format(uname2))
         conn.commit()
         return redirect("/bucket")
-        
 
 #Displays user"s bucket list / Home page
 @route("/bucket", method="GET")
