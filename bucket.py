@@ -82,13 +82,24 @@ def bucket_list():
 #Add a new task to the list
 @route("/new", method="GET")
 def new_item():
+    
     if request.GET.save:
-        new = request.GET.task.strip()
         c = conn.cursor()
-        c.execute("INSERT INTO '{}' (task,status) VALUES ('{}','{}')".format(uname2,new, "Incomplete"))
-        conn.commit()
-        return redirect("/bucket")
+        num_id = c.execute("SELECT COUNT(*) from '{}'".format(uname2))
+        result_id = num_id.fetchone()
 
+        for i in result_id:
+            result = i
+
+            if result < 15:
+                new = request.GET.task.strip()
+                c = conn.cursor()
+                c.execute("INSERT INTO '{}' (task,status) VALUES ('{}','{}')".format(uname2,new, "Incomplete"))
+                conn.commit()
+                return redirect("/bucket")
+
+            else:
+                return "UNlucky"
 
 #edits current task
 @route("/edit/<no:int>", method="GET")
@@ -124,6 +135,7 @@ def edit_item(no):
 @error(404)
 def mistake404(code):
     return "Sorry, this page does not exist!"
+
 
 debug(True)
 run(reloader=True)
