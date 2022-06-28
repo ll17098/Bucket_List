@@ -1,4 +1,6 @@
 from operator import countOf
+from platform import node
+from re import I
 import sqlite3
 from bottle import route, run, debug, error
 from bottle import template, request, redirect, view
@@ -33,7 +35,8 @@ def checklogin():
         return redirect("/bucket")
 
     else:
-        return "Incorrect Username / Password<br><button type='submit'><a href='/'>LOGIN AGAIN</a></button>"
+        msg = "Inccorect Username / Password"
+        return template("templates/errorlogin.html", msg=msg)
 
 #Records users new log in details into sql
 @route("/reg_validation", method="POST")
@@ -43,11 +46,11 @@ def checkRegister():
     pword2 = request.forms["password"]
     c = conn.cursor()
     c.execute("SELECT * FROM userInfo WHERE username = '{}'".format(uname2))
- 
     result = c.fetchone()
 
     if result:
-        return "username already exists<br><button type='submit'><a href='/reg'>REGISTER AGAIN</a></button>"
+        msg = "Username Already Exsists"
+        return template("templates/errorreg.html", msg=msg)
 
     else:
         c = conn.cursor()
@@ -61,23 +64,31 @@ def checkRegister():
 @route("/bucket", method="GET")
 def bucket_list():
     c = conn.cursor()
-    c.execute("SELECT * FROM '{}'".format(uname2))
-    result = c.fetchall()
+    all = c.execute("SELECT * FROM '{}'".format(uname2))
+    result_all = all.fetchall()
+
+    id = c.execute("SELECT id INTEGER FROM '{}'".format(uname2))
+    result_id = id.fetchone()
+    
+    for i in result_id:
+        result_id1 = i
+
     c.close()
-    return template("templates/make_table", rows=result)
+    return template("templates/make_table", rows=result_all, no=result_id1)
+
+
+
 
 #Add a new task to the list
 @route("/new", method="GET")
 def new_item():
- if request.GET.save:
-    new = request.GET.task.strip()
-    c = conn.cursor()
-    c.execute("INSERT INTO '{}' (task,status) VALUES ('{}','{}')".format(uname2,new, "Incomplete"))
-    conn.commit()
-    return redirect("/bucket")
+    if request.GET.save:
+        new = request.GET.task.strip()
+        c = conn.cursor()
+        c.execute("INSERT INTO '{}' (task,status) VALUES ('{}','{}')".format(uname2,new, "Incomplete"))
+        conn.commit()
+        return redirect("/bucket")
 
- else:
-     return template("templates/new_task.html")
 
 #edits current task
 @route("/edit/<no:int>", method="GET")
