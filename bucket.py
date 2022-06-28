@@ -64,17 +64,11 @@ def checkRegister():
 @route("/bucket", method="GET")
 def bucket_list():
     c = conn.cursor()
-    all = c.execute("SELECT * FROM '{}'".format(uname2))
-    result_all = all.fetchall()
-
-    id = c.execute("SELECT id INTEGER FROM '{}'".format(uname2))
-    result_id = id.fetchone()
-    
-    for i in result_id:
-        result_id1 = i
+    c.execute("SELECT id, task FROM '{}' WHERE status LIKE '{}'".format(uname2, "Incomplete"))
+    result = c.fetchall()
 
     c.close()
-    return template("templates/make_table", rows=result_all, no=result_id1)
+    return template("templates/make_table", rows=result)
 
 
 
@@ -82,7 +76,6 @@ def bucket_list():
 #Add a new task to the list
 @route("/new", method="GET")
 def new_item():
-    
     if request.GET.save:
         c = conn.cursor()
         num_id = c.execute("SELECT COUNT(*) from '{}'".format(uname2))
@@ -106,6 +99,7 @@ def new_item():
 def edit_item(no):
     edit = request.GET.task.strip()
     status = request.GET.status.strip()
+    
     if request.GET.save:
         if status == "Complete":
             status = "Complete"
