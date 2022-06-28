@@ -22,8 +22,6 @@
     <a href="/edit/2">Edit Milstone 2</a>
     <a href="/edit/3">Edit Milstone 3</a>
     <a href="/edit/4">Edit Milstone 4</a>
-    <a href="/edit/5">Edit Milstone 5</a>
-    <a href="/edit/6">Edit Milstone 6</a>
   </div>
 </div>
 
@@ -39,19 +37,21 @@
       <button type="submit" name="save" value="save">ADD MILESTONE</button>
     </form>
   </div>
+
   <table class="tbl">
     <th style="width:20px">Task</th>
     <th>Milestone</th>
     <th style="width:100px">Completion</th>
     %for row in rows:
-      <tr> 
+      %id, title = row
+      <tr>
       %for col in row:
         <td>{{col}}</td>
+        
       %end
-        <td><a href="/edit/{{no}}">{{no}}</a></td>
+      <td><a href="/edit/{{id}}"> Edit {{id}}</a></td>
       </tr>
     %end
-   
   <table>
 </div>
 </body>
