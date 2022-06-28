@@ -16,9 +16,14 @@
 </div>
 
 <div class="dropdown">
-  <button class="dropbtn">Bucket List Options</button>
+  <button class="dropbtn">Edit my Milestones</button>
   <div class="dropdown-content">
-    <a href="/edit">Edit Current Item</a>
+    <a href="/edit/1">Edit Milstone 1</a>
+    <a href="/edit/2">Edit Milstone 2</a>
+    <a href="/edit/3">Edit Milstone 3</a>
+    <a href="/edit/4">Edit Milstone 4</a>
+    <a href="/edit/5">Edit Milstone 5</a>
+    <a href="/edit/6">Edit Milstone 6</a>
   </div>
 </div>
 
@@ -38,15 +43,15 @@
     <th style="width:20px">Task</th>
     <th>Milestone</th>
     <th style="width:100px">Completion</th>
-    <th style="width:100px">Edit</th>
     %for row in rows:
       <tr> 
       %for col in row:
         <td>{{col}}</td>
       %end
-      <td><a href="/edit">Edit</a></td>
+        <td><a href="/edit/{{no}}">{{no}}</a></td>
       </tr>
     %end
+   
   <table>
 </div>
 </body>
@@ -95,6 +100,7 @@ li a:hover {
   color: white;
   margin-top: 10px;
   margin-right: 10px;
+  width: 170px;
   padding: 16px;
   font-size: 16px;
   border: none;
