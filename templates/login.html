@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log in</title>
     <link rel="stylesheet" href="static/style.css">
+    <title>Log in</title>
 </head>
 <body>
 <form action="/login_validation" method="POST">
@@ -36,18 +36,19 @@ body {
     background-size: 60%;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-position: left; 
+    background-position: left;
+    font-family: 'Courier New', monospace;
 }
 .container {
     height: 200px;
     position: fixed;
     top: 35%;
-    left: 75%;
+    left: 74%;
     margin-top: -100px;
     margin-left: -100px;
 }
 input[type=text], input[type=password], button[type=submit] {
- width: 360px;
+  width: 360px;
   padding: 12px 20px;
   margin: 8px 0;
   box-sizing: border-box;
@@ -58,9 +59,13 @@ button {
 }
 button a {
   color: black;
+  text-decoration: none;
+}
+button:hover a {
+    text-decoration: none;
 }
 button:hover {
-    background-color: #1C4C83;
+    background-color: #3378c6;
     color: black;
 }
 label, a, h1 {
