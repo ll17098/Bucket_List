@@ -12,24 +12,13 @@
 <div class="nav">
   <li><a class="active" href="/bucket"><b>Fill my Bucket</b></a></li>
   <li><a href="/">Log Out</a></li>
-  <li><a href="/bucket">Home</a></li>
+  <li><a href="/doneBucket">Completed Milestones</a></li>
 </div>
-
-<div class="dropdown">
-  <button class="dropbtn">Edit my Milestones</button>
-  <div class="dropdown-content">
-    <a href="/edit/1">Edit Milstone 1</a>
-    <a href="/edit/2">Edit Milstone 2</a>
-    <a href="/edit/3">Edit Milstone 3</a>
-    <a href="/edit/4">Edit Milstone 4</a>
-  </div>
-</div>
-
 
 
 <div class="container">
   <div class="field_wrap">
-    <h1>Here is your Bucket List</h1>
+    <h1>Here is your Bucket Incompleted List</h1>
   </div>
   <div class="new">
     <form action="/new" method="GET">
@@ -39,14 +28,16 @@
   </div>
 
   <table class="tbl">
-    <th style="width:20px">Task</th>
+    <th style="width:20px">ID</th>
     <th>Milestone</th>
-    <th style="width:100px">Completion</th>
+    <th style="width:100px">EDIT</th>
     %for row in rows:
       %id, title = row
+      
       <tr>
       %for col in row:
         <td>{{col}}</td>
+        
         
       %end
       <td><a href="/edit/{{id}}"> Edit {{id}}</a></td>
@@ -88,53 +79,7 @@ li a:hover {
   background-color: #1C4C83;
   float: left;
 }
-.dropdown {
-  text-decoration: none;
-  color: white;
-  text-align: center;
-  float: right;
-  display: block;
-}
-.dropbtn {
-  background-color: #1C4C83;
-  color: white;
-  margin-top: 10px;
-  margin-right: 10px;
-  width: 170px;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
-}
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: white;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-  text-align: center;
-}
 
-.dropdown-content a {
-  display: block;
-  width: 138px;
-  color: black;
-  padding: 16px;
-  text-decoration: none;
-  
-}
-
-.dropdown-content a:hover {background-color: #7D8185}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
-.dropdown:hover .dropbtn {
-  background-color: #1C4C83;
-  width: 1;
-}
 .new {
   position: absolute;
   top: 20%;
@@ -168,7 +113,7 @@ button[type=submit]:hover {
 }
 
 .field_wrap {
-  width: 20%;
+  width: 40%;
   text-align: center;
   border: none;
   background-color: #333;
@@ -202,8 +147,8 @@ th {
 }
 td {
   font-size: 20px;
-  background-color: #7d818556;
-  color: rgb(0, 0, 0);
+  background-color: #7d818582;
+  color: rgb(255, 255, 255);
   
 }
 
