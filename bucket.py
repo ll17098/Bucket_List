@@ -23,6 +23,10 @@ def login():
 def register():
     return template("templates/reg.html")
 
+@route("/Home")
+def index():
+    return template("templates/index.html")
+
 @route("/login_validation", method="POST")
 def checklogin():
     global uname2
@@ -32,7 +36,7 @@ def checklogin():
     c.execute("SELECT * FROM userInfo WHERE username = '{}' AND password = '{}'".format(uname2, pword2))
     result = c.fetchone()
     if result:
-        return redirect("/bucket")
+        return redirect("/Home")
 
     else:
         msg = "Inccorect Username / Password"
@@ -58,19 +62,24 @@ def checkRegister():
         c.execute("CREATE TABLE IF NOT EXISTS '{}' (id INTEGER PRIMARY KEY, task char(100) NOT NULL, status bool NOT NULL)".format(uname2))
         c.execute("INSERT INTO '{}'(task, status) VALUES('Add Your New Milestone ', 'Incomplete')".format(uname2))
         conn.commit()
-        return redirect("/bucket")
+        return redirect("/Home")
 
 #Displays user"s bucket list / Home page
 @route("/bucket", method="GET")
 def bucket_list():
     c = conn.cursor()
-    c.execute("SELECT id, task FROM '{}' WHERE status LIKE '{}'".format(uname2, "Incomplete"))
+    c.execute("SELECT id, task FROM '{}' WHERE status = '{}'".format(uname2, "Incomplete"))
     result = c.fetchall()
-
     c.close()
     return template("templates/make_table", rows=result)
 
-
+@route("/doneBucket", method="GET")
+def bucket_list2():
+    c = conn.cursor()
+    c.execute("SELECT id, task FROM '{}' WHERE status = '{}'".format(uname2, "Complete"))
+    result = c.fetchall()
+    c.close()
+    return template("templates/make_table2", rows=result)
 
 
 #Add a new task to the list
