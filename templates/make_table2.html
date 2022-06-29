@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>My Bucket List</title>
+</head>
+
+<body>
+<div class="nav">
+  <li><a class="active" href="/bucket"><b>Fill my Bucket</b></a></li>
+  <li><a href="/">Log Out</a></li>
+  <li><a href="/bucket">Incompleted Milestones</a></li>
+</div>
+
+
+<div class="container">
+  <div class="field_wrap">
+    <h1>Here is your Bucket Completed List</h1>
+  </div>
+  <div class="new">
+    <form action="/new" method="GET">
+      <input type="text" size="100" maxlength="100" placeholder="Enter your new Milestone" name="task" required>
+      <button type="submit" name="save" value="save">ADD MILESTONE</button>
+    </form>
+  </div>
+
+  <table class="tbl">
+    <th style="width:20px">ID</th>
+    <th>Milestone</th>
+    <th style="width:100px">EDIT</th>
+    %for row in rows:
+      %id, title = row
+      
+      <tr>
+      %for col in row:
+        <td>{{col}}</td>
+        
+        
+      %end
+      <td><a href="/edit/{{id}}"> Edit {{id}}</a></td>
+      </tr>
+    %end
+  <table>
+</div>
+</body>
+</html>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: 'Courier New', monospace;
+  background-image: url("https://cdn.successconsciousness.com/blog/wp-content/uploads/success-achievement.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.nav {
+  list-style-type: none;
+  overflow: hidden;
+  background-color: #333;
+}
+li a {
+  float: right;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+li a:hover {
+  background-color: #7D8185;
+}
+.active {
+  background-color: #1C4C83;
+  float: left;
+}
+
+.new {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+input[type=text] {
+  width: 360px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  left: 30%;
+}
+button[type=submit] {
+  color: white;
+  box-shadow: 5px 5px 10x 5px #1C4C83;
+  padding: 12px 20px;
+  width: 160px;
+  height: 43px;
+}
+button[type=submit], a {
+  color: black;
+}
+
+button[type=submit]:hover {
+  background-color: #3378c6;
+  color: black;
+}
+.container {
+  margin-top: 100px;
+  margin-bottom: auto;
+}
+
+.field_wrap {
+  width: 40%;
+  text-align: center;
+  border: none;
+  background-color: #333;
+  color: rgb(255, 255, 255);
+  border-radius: 15px;
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.tbl { 
+  border-spacing: 1px;
+  margin-top: 10%;
+  margin-left: 250px;
+  margin-right: 250px;
+  width: 70%;
+}
+
+th, td {
+  border: 0px solid black;
+  border-radius: 2px;
+  padding: 15px;
+  padding-bottom: 15px;
+  padding-left: auto;
+  padding-right: auto;
+}
+th {
+  font-size: 30px; 
+  background-color: #1C4C83;
+  color: white;
+}
+td {
+  font-size: 20px;
+  background-color: #7d818582;
+  color: rgb(255, 255, 255);
+  
+}
+
+
+.edit {
+  margin-right: 150px;
+  margin-left: 100px;
+}
+</style>
