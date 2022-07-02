@@ -18,7 +18,7 @@
 
 <div class="container">
   <div class="field_wrap">
-    <h1>Here is your Bucket Incompleted List</h1>
+    <h1>Here is your Incomplete Bucket List</h1>
   </div>
   <div class="new">
     <form action="/new" method="GET">
@@ -28,9 +28,9 @@
   </div>
 
   <table class="tbl">
-    <th style="width:20px">ID</th>
+
     <th>Milestone</th>
-    <th style="width:100px">EDIT</th>
+    <th style="width:80px">EDIT</th>
     %for row in rows:
       %id, title = row
       
@@ -40,7 +40,7 @@
         
         
       %end
-      <td><a href="/edit/{{id}}"> Edit {{id}}</a></td>
+      <td><button type="submit"><a href="/edit/{{id}}">EDIT</a></button></td>
       </tr>
     %end
   <table>
@@ -55,7 +55,7 @@
 }
 body {
   font-family: 'Courier New', monospace;
-  background-image: url("https://cdn.successconsciousness.com/blog/wp-content/uploads/success-achievement.jpg");
+  background-image: url("https://assets.entrepreneur.com/content/3x2/2000/20161219221121-GettyImages-498527747.jpeg?auto=webp&quality=95&crop=16:9&width=675");
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -64,6 +64,7 @@ body {
   overflow: hidden;
   background-color: #333;
 }
+
 li a {
   float: right;
   display: block;
@@ -97,10 +98,12 @@ button[type=submit] {
   box-shadow: 5px 5px 10x 5px #1C4C83;
   padding: 12px 20px;
   width: 160px;
+  
   height: 43px;
 }
 button[type=submit], a {
   color: black;
+  text-decoration: none;
 }
 
 button[type=submit]:hover {
@@ -140,6 +143,7 @@ th, td {
   padding-left: auto;
   padding-right: auto;
 }
+
 th {
   font-size: 30px; 
   background-color: #1C4C83;
@@ -151,7 +155,13 @@ td {
   color: rgb(255, 255, 255);
   
 }
-
+td:nth-child(1) {
+  display: none
+}
+td:nth-child(3) {
+  text-align: center;
+  
+}
 
 .edit {
   margin-right: 150px;
