@@ -25,15 +25,14 @@ def register():
 
 @route("/Home")
 def index():
-    return template("templates/index.html")
 
 @route("/login_validation", method="POST")
 def checklogin():
-    global uname2
-    uname2 = request.forms["username"]
-    pword2 = request.forms["password"]
+    global uname
+    uname = request.forms["username"]
+    pword = request.forms["password"]
     c = conn.cursor()
-    c.execute("SELECT * FROM userInfo WHERE username = '{}' AND password = '{}'".format(uname2, pword2))
+    c.execute("SELECT * FROM userInfo WHERE username = '{}' AND password = '{}'".format(uname, pword))
     result = c.fetchone()
     if result:
         return redirect("/Home")
@@ -45,22 +44,32 @@ def checklogin():
 #Records users new log in details into sql
 @route("/reg_validation", method="POST")
 def checkRegister():
-    global uname2
-    uname2 = request.forms["username"]
-    pword2 = request.forms["password"]
+    global uname
+    uname = request.forms["username"]
+    pword = request.forms["password"]
+    pword2 = request.forms["password2"]
+    
+    
+
     c = conn.cursor()
-    c.execute("SELECT * FROM userInfo WHERE username = '{}'".format(uname2))
+    c.execute("SELECT * FROM userInfo WHERE username = '{}'".format(uname))
     result = c.fetchone()
 
     if result:
-        msg = "Username Already Exsists"
-        return template("templates/errorreg.html", msg=msg)
+        msg1 = "Username Already Exsists"
+        return template("templates/errorreg.html", msg=msg1)
+
+    if pword2 != pword:
+        msg2 = "Password does not match bro"
+        return template("templates/errorreg.html", msg=msg2)
+        
 
     else:
         c = conn.cursor()
-        c.execute("INSERT INTO userInfo (username,password) VALUES (?,?)", (uname2,pword2))
-        c.execute("CREATE TABLE IF NOT EXISTS '{}' (id INTEGER PRIMARY KEY, task char(100) NOT NULL, status bool NOT NULL)".format(uname2))
-        c.execute("INSERT INTO '{}'(task, status) VALUES('Add Your New Milestone ', 'Incomplete')".format(uname2))
+        c.execute("INSERT INTO userInfo (username,password) VALUES (?,?)", (uname,pword))
+        c.execute("CREATE TABLE IF NOT EXISTS '{}' (id INTEGER PRIMARY KEY, task char(100) NOT NULL, status bool NOT NULL)".format(uname))
+        c.execute("INSERT INTO '{}'(task, status) VALUES('Add Your New Milestone ', 'Incomplete')".format(uname))
+        c.execute("INSERT INTO '{}'(task, status) VALUES('Add Your New Milestone ', 'Complete')".format(uname))
         conn.commit()
         return redirect("/Home")
 
@@ -68,7 +77,7 @@ def checkRegister():
 @route("/bucket", method="GET")
 def bucket_list():
     c = conn.cursor()
-    c.execute("SELECT id, task FROM '{}' WHERE status = '{}'".format(uname2, "Incomplete"))
+    c.execute("SELECT id, task FROM '{}' WHERE status = '{}'".format(uname, "Incomplete"))
     result = c.fetchall()
     c.close()
     return template("templates/make_table", rows=result)
@@ -76,7 +85,7 @@ def bucket_list():
 @route("/doneBucket", method="GET")
 def bucket_list2():
     c = conn.cursor()
-    c.execute("SELECT id, task FROM '{}' WHERE status = '{}'".format(uname2, "Complete"))
+    c.execute("SELECT id, task FROM '{}' WHERE status = '{}'".format(uname, "Complete"))
     result = c.fetchall()
     c.close()
     return template("templates/make_table2", rows=result)
@@ -87,7 +96,7 @@ def bucket_list2():
 def new_item():
     if request.GET.save:
         c = conn.cursor()
-        num_id = c.execute("SELECT COUNT(*) from '{}'".format(uname2))
+        num_id = c.execute("SELECT COUNT(*) from '{}'".format(uname))
         result_id = num_id.fetchone()
 
         for i in result_id:
@@ -96,7 +105,7 @@ def new_item():
             if result < 15:
                 new = request.GET.task.strip()
                 c = conn.cursor()
-                c.execute("INSERT INTO '{}' (task,status) VALUES ('{}','{}')".format(uname2,new, "Incomplete"))
+                c.execute("INSERT INTO '{}' (task,status) VALUES ('{}','{}')".format(uname,new, "Incomplete"))
                 conn.commit()
                 return redirect("/bucket")
 
@@ -116,20 +125,20 @@ def edit_item(no):
             status = "Incomplete"
             
         c = conn.cursor()
-        c.execute("UPDATE '{}' SET task = '{}', status = '{}' WHERE id LIKE '{}'".format(uname2, edit, status, no))
+        c.execute("UPDATE '{}' SET task = '{}', status = '{}' WHERE id LIKE '{}'".format(uname, edit, status, no))
         conn.commit()
         return redirect("/bucket")
 
 #deletes task
     elif request.GET.delete:
         c = conn.cursor()
-        c.execute("DELETE FROM '{}' WHERE task = '{}' AND id = '{}'".format(uname2, edit, no))
+        c.execute("DELETE FROM '{}' WHERE task = '{}' AND id = '{}'".format(uname, edit, no))
         conn.commit()
         return redirect("/bucket")
 
     else:
         c = conn.cursor()
-        c.execute("SELECT task FROM '{}' WHERE id LIKE '{}'".format(uname2,str(no)))
+        c.execute("SELECT task FROM '{}' WHERE id LIKE '{}'".format(uname,str(no)))
         cur_data = c.fetchone()
         return template("templates/edit_task", old=cur_data, no=no)
 
