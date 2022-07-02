@@ -1,15 +1,110 @@
-%#template for editing a task
-%#the template expects to receive a value for "no" as well a "old", the text of the selected ToDo item
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div class="nav">
+    <li><a class="active" href="/bucket"><b>Fill my Bucket</b></a></li>
+    <li><a href="/">Log Out</a></li>
+    <li><a href="/doneBucket">Completed Milestones</a></li>
+    <li><a href="/bucket">Incompleted Milestones</a></li>
+  </div>
 
-<p>Edit the task with ID = {{no}}</p>
-<form action="/edit/{{no}}" method="get">
-  <input type="text" name="task" value="{{old[0]}}">
-  <select name="status">
-    <option>Incomplete</option>
-    <option>Complete</option>
-  
-  </select>
-  <br>
-  <input type="submit" name="save" value="save">
-  <button type="submit" name="delete" value="delete">DELeTE</button>
-</form>
+  <div class="field_wrap">
+    <h1>Edit the task with ID = {{no}}</h1>
+  </div>
+  <div class="container">
+    <form action="/edit/{{no}}" method="get">
+      <input type="text" name="task" value="{{old[0]}}">
+        <select name="status">
+        
+          <option>Incomplete</option>
+          <option>Complete</option>
+        </select>
+      <br>
+      <button type="submit" name="save" value="save">SAVE</button>
+      <button type="submit" name="delete" value="delete">DELETE</button>
+    </form>
+  </div>
+</body>
+</html>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: 'Courier New', monospace;
+  background-image: url("https://assets.entrepreneur.com/content/3x2/2000/20161219221121-GettyImages-498527747.jpeg?auto=webp&quality=95&crop=16:9&width=675");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.nav {
+  list-style-type: none;
+  overflow: hidden;
+  background-color: #333;
+}
+li a {
+  float: right;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+li a:hover {
+  background-color: #7D8185;
+}
+.active {
+  background-color: #1C4C83;
+  float: left;
+}
+
+.field_wrap {
+  width: 40%;
+  text-align: center;
+  border: none;
+  background-color: #333;
+  color: rgb(255, 255, 255);
+  border-radius: 15px;
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.container{
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+input[type=text] {
+  top: 30%;
+  width: 370px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+}
+
+button[type=submit] {
+  color: white;
+  box-shadow: 5px 5px 10x 5px #1C4C83;
+  padding: 12px 20px;
+  width: 180px;
+  height: 43px;
+}
+
+
+button[type=submit], a {
+  color: black;
+}
+
+button[type=submit]:hover {
+  background-color: #3378c6;
+  color: black;
+}
+</style>
+
