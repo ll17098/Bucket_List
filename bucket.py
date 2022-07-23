@@ -1,6 +1,6 @@
 from operator import countOf
 from platform import node
-from re import I
+from re import I, L
 import sqlite3
 from bottle import route, run, debug, error
 from bottle import template, request, redirect, view
@@ -23,8 +23,11 @@ def login():
 def register():
     return template("templates/reg.html")
 
+#register page
 @route("/Home")
 def index():
+    return template("templates/index.html", uname=uname)
+
 
 @route("/login_validation", method="POST")
 def checklogin():
@@ -73,27 +76,63 @@ def checkRegister():
         conn.commit()
         return redirect("/Home")
 
-#Displays user"s bucket list / Home page
+#Displays user"s incompletedbucket list 
 @route("/bucket", method="GET")
 def bucket_list():
-    c = conn.cursor()
-    c.execute("SELECT id, task FROM '{}' WHERE status = '{}'".format(uname, "Incomplete"))
-    result = c.fetchall()
-    c.close()
-    return template("templates/make_table", rows=result)
+    while True:
+        try:
+            c = conn.cursor()
+            c.execute("SELECT id, task FROM '{}' WHERE status = '{}'".format(uname, "Incomplete"))
+            result = c.fetchall()
 
+            noRows = c.execute("SELECT COUNT(*) FROM '{}'".format(uname))
+            result2 = noRows.fetchone()
+            for amt in result2:
+                numTotal = amt
+
+            noRows2 = c.execute("SELECT COUNT(*) FROM '{}' WHERE status LIKE '{}'".format(uname, "Incomplete"))
+            result3 = noRows2.fetchone()
+            for i in result3:
+                numInc = i
+
+            c.close()
+            return template("templates/make_table", rows=result, num1=numTotal, num2=numInc)
+
+        except NameError:
+             return redirect("/")
+    
+
+#displays user's complete bucket list
 @route("/doneBucket", method="GET")
 def bucket_list2():
-    c = conn.cursor()
-    c.execute("SELECT id, task FROM '{}' WHERE status = '{}'".format(uname, "Complete"))
-    result = c.fetchall()
-    c.close()
-    return template("templates/make_table2", rows=result)
+    while True:
+        try:
+            c = conn.cursor()
+            c.execute("SELECT id, task FROM '{}' WHERE status = '{}'".format(uname, "Complete"))
+            result = c.fetchall()
+
+            noRows = c.execute("SELECT COUNT(*) FROM '{}'".format(uname))
+            result2 = noRows.fetchone()
+            for amt in result2:
+                numTotal = amt
+
+            noRows2 = c.execute("SELECT COUNT(*) FROM '{}' WHERE status LIKE '{}'".format(uname, "Complete"))
+            result3 = noRows2.fetchone()
+            for i in result3:
+                numInc = i
+            c.close()
+            return template("templates/make_table2", rows=result, num1=numTotal, num2=numInc)
+        
+        except NameError:
+            return redirect("/")
+
+
 
 
 #Add a new task to the list
 @route("/new", method="GET")
 def new_item():
+    #when save is clicked, it will count rows in users table
     if request.GET.save:
         c = conn.cursor()
         num_id = c.execute("SELECT COUNT(*) from '{}'".format(uname))
@@ -101,7 +140,8 @@ def new_item():
 
         for i in result_id:
             result = i
-
+            
+            #limit of rows
             if result < 15:
                 new = request.GET.task.strip()
                 c = conn.cursor()
@@ -110,37 +150,46 @@ def new_item():
                 return redirect("/bucket")
 
             else:
-                return "UNlucky"
+                msg = ("Sorry {}, there is a milestone limit.".format(uname))
+                return template("templates/erroradd.html", msg=msg)
 
 #edits current task
 @route("/edit/<no:int>", method="GET")
 def edit_item(no):
-    edit = request.GET.task.strip()
-    status = request.GET.status.strip()
-    
-    if request.GET.save:
-        if status == "Complete":
-            status = "Complete"
-        else:
-            status = "Incomplete"
-            
-        c = conn.cursor()
-        c.execute("UPDATE '{}' SET task = '{}', status = '{}' WHERE id LIKE '{}'".format(uname, edit, status, no))
-        conn.commit()
-        return redirect("/bucket")
 
-#deletes task
-    elif request.GET.delete:
-        c = conn.cursor()
-        c.execute("DELETE FROM '{}' WHERE task = '{}' AND id = '{}'".format(uname, edit, no))
-        conn.commit()
-        return redirect("/bucket")
+    while True:
+        try:
+            edit = request.GET.task.strip()
+            status = request.GET.status.strip()
 
-    else:
-        c = conn.cursor()
-        c.execute("SELECT task FROM '{}' WHERE id LIKE '{}'".format(uname,str(no)))
-        cur_data = c.fetchone()
-        return template("templates/edit_task", old=cur_data, no=no)
+            #update table or update the task and status of it
+            if request.GET.save:
+                if status == "Complete":
+                    status = "Complete"
+                else:
+                    status = "Incomplete"
+                    
+                c = conn.cursor()
+                c.execute("UPDATE '{}' SET task = '{}', status = '{}' WHERE id LIKE '{}'".format(uname, edit, status, no))
+                conn.commit()
+                return redirect("/bucket")
+
+            #deletes task
+            elif request.GET.delete:
+                c = conn.cursor()
+                c.execute("DELETE FROM '{}' WHERE task = '{}' AND id = '{}'".format(uname, edit, no))
+                conn.commit()
+                return redirect("/bucket")
+
+            #shows task by selecting the task where the id equals that task
+            else:
+                c = conn.cursor()
+                c.execute("SELECT task FROM '{}' WHERE id LIKE '{}'".format(uname,str(no)))
+                cur_data = c.fetchone()
+                return template("templates/edit_task", old=cur_data, no=no)
+
+        except NameError:
+            return redirect("/")
 
 
 #catach an error
