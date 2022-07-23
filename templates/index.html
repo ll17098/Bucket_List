@@ -7,14 +7,70 @@
     <title>Home</title>
 </head>
 <body>
+    <div class="nav">
+        <li><a class="active" href="/Home"><b>Fill my Bucket</b></a></li>
+        <li><a href="/">Log Out</a></li>
+        <li><a href="/bucket">My Bucket List</a></li>
+        <li><a href="/Home">Home</a></li>
+      </div>
     <div class="container">
         <h1>Welcome {{uname}}</h1>
-            <p>Welcome {{uname}}, this bucket list is for you to make milestones that you are willing to achieve before the time time comes. You will be able to add new milestones and edit the those milestones. </p>
-        <div class="links">
-            <button type="submit"><a href="/bucket">My Bucket List</a></button>
-            <button type="submit"><a href="/">Log Out</a></button>
-        </div>
-      
+        <p>This bucket list is for you to set goals and track their completion before the time comes.</p>
+        <h2>Features</h2>
+        <li>Add new milestones</li>
+        <li>Edit milestones</li>
+        <li>Update milestones status</li>
     </div>
 </body>
 </html>
+<style>
+* {
+    margin: 0;
+    padding:0 ;
+}
+body {
+    background-image: url("https://www.kindpng.com/picc/m/419-4192994_list-clip-art-bucket-list-clipart-black-and.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: left;
+    font-family: 'Courier New', monospace;
+}
+.nav {
+  list-style-type: none;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li a {
+  float: right;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+li a:hover {
+  background-color: #7D8185;
+}
+.active {
+  background-color: #1c4c83;
+  float: left;
+}
+.container {
+    font-family: 'Courier New', monospace;
+    font-size: 30px;
+    width: 40%;
+    padding: 5px;
+    text-align: center;
+    border: none;
+    background-color: #1c4c83d4;
+    color: rgb(255, 255, 255);
+    border-radius: 10px;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+</style>
