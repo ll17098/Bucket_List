@@ -10,9 +10,10 @@
 
 <body>
 <div class="nav">
-  <li><a class="active" href="/bucket"><b>Fill my Bucket</b></a></li>
+  <li><a class="active" href="/Home"><b>Fill my Bucket</b></a></li>
   <li><a href="/">Log Out</a></li>
   <li><a href="/doneBucket">Completed Milestones</a></li>
+  <li><a href="/Home">Home</a></li>
 </div>
 
 
@@ -40,10 +41,14 @@
         
         
       %end
-      <td><button type="submit"><a href="/edit/{{id}}">EDIT</a></button></td>
+      <td><a href="/edit/{{id}}"><button type="submit">EDIT</button></td>
       </tr>
     %end
   <table>
+  <div class="amt">
+    <p>{{num1}} / 20 goals </p>
+    <p>{{num2}} / {{num1}} goals Incompleted</p>
+  </div>
 </div>
 </body>
 </html>
@@ -52,6 +57,9 @@
 * {
   margin: 0;
   padding: 0;
+}
+p {
+  color: white;
 }
 body {
   font-family: 'Courier New', monospace;
